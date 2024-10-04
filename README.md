@@ -1,6 +1,4 @@
-######################
-Encàrrecs d'una botiga
-######################
+# Encarrecs d'una botiga
 
 Aquesta petita aplicació serveix com gestor d'encàrregs d'una botiga, on cada cliente pot fer els encàrrecs que vulgui. Els encàrrecs es gestionen mitjançant diferents classes i es guarden en diferents formats. Un fitxer de text amb format de **factura**, un fitxer **csv** i un fitxer en format **binari**.
 
