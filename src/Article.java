@@ -26,4 +26,7 @@ public class Article {
     public String toString() {
         return "Article: " + nom + " Quantitat: " + quantitat + " " + unitat;
     }
+    public String toCSV() {
+        return nom + ";" + quantitat + ";" + unitat + ";";
+    }
 }

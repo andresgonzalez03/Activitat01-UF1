@@ -3,6 +3,7 @@ public enum Unitat {
     KILO("Kg"),
     LITRE("L"),
     UNITAT("Ud"),
+    AMPOLLA("amp"),
     GRAM("Gr");
 
     private final String nom;
@@ -23,6 +24,6 @@ public enum Unitat {
                 return unitat;
             }
         } 
-        throw new IllegalArgumentException("Indica una unitat, ha de ser Kilogram (Kg), Litre (L), Unitat (Ud) o Gram (Gr)");
+        throw new IllegalArgumentException("Indica una unitat, ha de ser Kilogram (Kg), Litre (L), Unitat (Ud), Ampolla (Amp) o Gram (Gr)");
     }
 }
