@@ -1,7 +1,6 @@
 package src;
 /* Classe que conté les propietats d'un article dintre d'una comanda d'un client. */
 
-
 public class Article {
     private String nom;
     private Unitat unitat;
@@ -24,7 +23,7 @@ public class Article {
     }
     @Override
     public String toString() {
-        return "Article: " + nom + " Quantitat: " + quantitat + " " + unitat;
+        return String.format("%.2f\t%s\t%s", quantitat, unitat, nom);
     }
     public String toCSV() {
         return nom + ";" + quantitat + ";" + unitat + ";";
