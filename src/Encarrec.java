@@ -10,7 +10,9 @@ public class Encarrec {
     private LocalDate data;
     private ArrayList<Article> articles;
 
-    public Encarrec() {}
+    public Encarrec() {
+        this.articles = new ArrayList<>();
+    }
     public Encarrec(String nomClient, String telefonClient, LocalDate data, ArrayList<Article> articles) {
         setData(data);
         setArticles(articles);
@@ -41,10 +43,10 @@ public class Encarrec {
         sb.append("Nom del client: " + nomClient + "\n");
         sb.append("Telefon del client: " + telefonClient + "\n");
         sb.append("Data de l'encàrrec: " + data + "\n");
-        sb.append("Quantitat\tUnitats\tArticle\n");
-        sb.append("=============== ========== ===============\n");
+        sb.append("Quantitat\tUnitats\t" + " " + "Article\n");
+        sb.append("=========\t=======\t" + " " + "=========\n");
         for(Article a : articles) {
-            sb.append(a.toString() + "\n");
+            sb.append(a.toString() + "\t\t"+ " " + "\n");
         }
         return sb.toString();
     }

@@ -3,7 +3,7 @@ import java.io.*;
 
 public class Gestor {
     public static void crearDirectorisFactures() throws IOException {
-        String directoris[] = {"/home/this_andres/Activitat01-UF1/factures","/home/this_andres/Activitat01-UF1/fitxersCSV", "/home/this_andres/Activitat01-UF1/fitxersBinaris"};
+        String directoris[] = {"/home/this_andres/Activitat01-UF1/factures/","/home/this_andres/Activitat01-UF1/fitxersCSV/", "/home/this_andres/Activitat01-UF1/fitxersBinaris/"};
         File carpeta[] = new File[directoris.length];
         for (int i = 0; i < carpeta.length; i++) {
             carpeta[i] = new File(directoris[i]);
@@ -15,14 +15,12 @@ public class Gestor {
                 } else {
                     System.out.println("No s'ha pogut fer el directori.");
                 }
-            } else {
-                System.out.println("El directori ja existeix.");
-            }
+            } 
         }
     }
     public static void EscriureAlbara(Encarrec encarrec)  throws IOException {
         crearDirectorisFactures();
-        String ruta = "/home/this_andres/Activitat01-UF1/factures";
+        String ruta = "/home/this_andres/Activitat01-UF1/factures/";
         String nomArxiu = ruta + "encarrecs_client_" + encarrec.getNomClient() + "_" + System.currentTimeMillis() + ".txt";
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(nomArxiu))) {
             writer.write(encarrec.generarAlbara());
@@ -113,6 +111,19 @@ public class Gestor {
                 encarrec.afegirArticle(article);
             }
             System.out.println(encarrec.generarAlbara());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public static void llegirAlbara(String ruta) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(ruta))) {
+            while(true) {
+                String linia = reader.readLine();
+                if(linia == null) {
+                    break;
+                }
+                System.out.println(linia);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
