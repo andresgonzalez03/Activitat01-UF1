@@ -76,7 +76,7 @@ L'usuari pot introduir les dades de l'encàrrec:
 ### 3. Validació de Dades
 Es fan servir mètodes de la classe `UtilString` per validar i normalitzar les entrades, assegurant que les dades siguin correctes. Per exemple, es comprova que els noms no estiguin buits i s'eliminen els espais extres.
 
-## #4. Creació de l'Encàrrec
+### 4. Creació de l'Encàrrec
 Un cop recollides les dades, es crea un objecte de la classe `Encarrec`, on s'emmagatzema la informació del client i els articles afegits. Es poden realitzar operacions com afegir més articles a la llista.
 
 ### 5. Generació de Documents
