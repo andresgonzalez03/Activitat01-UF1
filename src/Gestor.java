@@ -27,7 +27,7 @@ public class Gestor {
     public static void EscriureAlbara(Encarrec encarrec)  throws IOException {
         crearDirectoris();
         String ruta = PATH + "/factures/";
-        String nomArxiu = ruta + "encarrecs_client_" + encarrec.getNomClient() + "_" + new SimpleDateFormat("dd-MM-yyyy_HH:mm:ss").format(new Date(System.currentTimeMillis())) + ".txt";
+        String nomArxiu = ruta + "encarrecs_client_" + encarrec.getNomClient() + "_" + new SimpleDateFormat("dd-MM-yyyy_HH_mm_ss").format(new Date(System.currentTimeMillis())) + ".txt";
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(nomArxiu))) {
             writer.write(encarrec.generarAlbara());
             System.out.println("Albarà creat amb nom: " + nomArxiu);
@@ -38,7 +38,7 @@ public class Gestor {
     public static void EscriureCSV(Encarrec encarrec) throws IOException {
         crearDirectoris();
         String ruta =  PATH + "/fitxersCSV/";
-        String nomArxiu = ruta + "encarrecs_client_" + encarrec.getNomClient() + "_" + new SimpleDateFormat("dd-MM-yyyy_HH:mm:ss").format(new Date(System.currentTimeMillis())) + ".csv";
+        String nomArxiu = ruta + "encarrecs_client_" + encarrec.getNomClient() + "_" + new SimpleDateFormat("dd-MM-yyyy_HH_mm_ss").format(new Date(System.currentTimeMillis())) + ".csv";
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(nomArxiu))) {
             writer.write(encarrec.generarCSV());
             System.out.println("CSV creat amb nom: " + nomArxiu);
@@ -49,7 +49,7 @@ public class Gestor {
     public static void EscriureBinari(Encarrec encarrec) throws IOException {
         crearDirectoris();
         String ruta = PATH + "/fitxersBinaris/";
-        String nomArxiu = ruta + "encarrecs_client_" + encarrec.getNomClient() + "_" + new SimpleDateFormat("dd-MM-yyyy_HH:mm:ss").format(new Date(System.currentTimeMillis())) + ".bin";
+        String nomArxiu = ruta + "encarrecs_client_" + encarrec.getNomClient() + "_" + new SimpleDateFormat("dd-MM-yyyy_HH_mm_ss").format(new Date(System.currentTimeMillis())) + ".bin";
         try (DataOutputStream str1 = new DataOutputStream(new FileOutputStream(nomArxiu))){
             str1.writeUTF(encarrec.getNomClient());
             str1.writeUTF(encarrec.getTelefonClient());
