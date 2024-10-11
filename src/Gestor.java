@@ -1,53 +1,56 @@
 package src;
 import java.io.*;
 import java.time.format.DateTimeFormatter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Gestor {
-    public static void crearDirectorisFactures() throws IOException {
-        String directoris[] = {"/home/this_andres/Activitat01-UF1/factures/","/home/this_andres/Activitat01-UF1/fitxersCSV/", "/home/this_andres/Activitat01-UF1/fitxersBinaris/"};
+    private static final String PATH = System.getProperty("user.home");
+    public static void crearDirectoris() throws IOException {
+        String directoris[] = {PATH + "/factures/",PATH + "/fitxersCSV/", PATH +"/fitxersBinaris/"};
         File carpeta[] = new File[directoris.length];
         for (int i = 0; i < carpeta.length; i++) {
             carpeta[i] = new File(directoris[i]);
         }
         for(File f : carpeta) {
             if(!f.exists()) {
-                if(f.mkdir()) {
-                    System.out.println("Directori creat.");
+                if(f.mkdirs()) {
+                    System.out.println("Directori creat: " + f.getPath());
                 } else {
-                    System.out.println("No s'ha pogut fer el directori.");
+                    System.out.println("No s'ha pogut fer el directori: " + f.getPath());
                 }
-            } 
+            } else {
+                System.out.println("El directori ja existeix: " + f.getPath());
+            }
         }
     }
     public static void EscriureAlbara(Encarrec encarrec)  throws IOException {
-        crearDirectorisFactures();
-        String ruta = "/home/this_andres/Activitat01-UF1/factures/";
-        String nomArxiu = ruta + "encarrecs_client_" + encarrec.getNomClient() + "_" + System.currentTimeMillis() + ".txt";
+        crearDirectoris();
+        String ruta = PATH + "/factures/";
+        String nomArxiu = ruta + "encarrecs_client_" + encarrec.getNomClient() + "_" + new SimpleDateFormat("dd-MM-yyyy_HH:mm:ss").format(new Date(System.currentTimeMillis())) + ".txt";
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(nomArxiu))) {
             writer.write(encarrec.generarAlbara());
-            System.out.println("Albarà creat.");
+            System.out.println("Albarà creat amb nom: " + nomArxiu);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
     public static void EscriureCSV(Encarrec encarrec) throws IOException {
-        crearDirectorisFactures();
-        String ruta = "/home/this_andres/Activitat01-UF1/fitxersCSV/";
-        String nomArxiu = ruta + "encarrecs_client_" + encarrec.getNomClient() + "_" + System.currentTimeMillis() + ".csv";
+        crearDirectoris();
+        String ruta =  PATH + "/fitxersCSV/";
+        String nomArxiu = ruta + "encarrecs_client_" + encarrec.getNomClient() + "_" + new SimpleDateFormat("dd-MM-yyyy_HH:mm:ss").format(new Date(System.currentTimeMillis())) + ".csv";
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(nomArxiu))) {
             writer.write(encarrec.generarCSV());
-            System.out.println("CSV creat.");
+            System.out.println("CSV creat amb nom: " + nomArxiu);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
     public static void EscriureBinari(Encarrec encarrec) throws IOException {
-        crearDirectorisFactures();
-        String ruta = "/home/this_andres/Activitat01-UF1/fitxersBinaris/";
-        String nomArxiu = ruta + "encarrecs_client_" + encarrec.getNomClient() + "_" + System.currentTimeMillis() + ".bin";
-        try {
-            FileOutputStream file1 = new FileOutputStream(nomArxiu);
-            DataOutputStream str1 = new DataOutputStream(file1);
+        crearDirectoris();
+        String ruta = PATH + "/fitxersBinaris/";
+        String nomArxiu = ruta + "encarrecs_client_" + encarrec.getNomClient() + "_" + new SimpleDateFormat("dd-MM-yyyy_HH:mm:ss").format(new Date(System.currentTimeMillis())) + ".bin";
+        try (DataOutputStream str1 = new DataOutputStream(new FileOutputStream(nomArxiu))){
             str1.writeUTF(encarrec.getNomClient());
             str1.writeUTF(encarrec.getTelefonClient());
             String dataFormatejada = encarrec.getData().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
@@ -57,16 +60,13 @@ public class Gestor {
                 str1.writeDouble(a.getQuantitat());
                 str1.writeUTF(a.getUnitat().toString());
             }
-            str1.close();
-            file1.close();
+            System.out.println("Fitxer binari creat amb nom: " + nomArxiu);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
     public static void llegirBinari(String ruta) {
-        try {
-            FileInputStream fileInpStream1 = new FileInputStream(ruta);
-            DataInputStream str2 = new DataInputStream(fileInpStream1);
+        try(DataInputStream str2 = new DataInputStream(new FileInputStream(ruta))) {
             String nomClient = str2.readUTF();
             String telefonClient = str2.readUTF();
             String data = str2.readUTF();
@@ -84,8 +84,6 @@ public class Gestor {
                 encarrec.afegirArticle(article);
             }
             System.out.println(encarrec.generarAlbara());
-            str2.close();
-            fileInpStream1.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

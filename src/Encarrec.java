@@ -21,15 +21,18 @@ public class Encarrec {
     }
     public void setData(LocalDate data) {
         if (data == null) {
-            throw new IllegalArgumentException("Sisplau, indica una data correcta en format dd/mm/aaaa");
+            
+        } else if (!data.isAfter(LocalDate.now())) {
+            System.out.println("Has d'indicar una data posterior a la actual.");
+        } else {
+            this.data = data;
         }
-        this.data = data;
     }
     public ArrayList<Article> getArticles() {return articles;}
     public LocalDate getData() {return data;}
     public void setArticles(ArrayList<Article> articles) {
         if(articles == null || articles.isEmpty()) {
-            throw new IllegalArgumentException("Com a mínim pots fer encàrrecs d'un article.");
+            System.out.println("Com a mínim pots fer encàrrecs d'un article.\n Sisplau, intenta-ho de nou");
         }
         this.articles = new ArrayList<>();
     }
@@ -42,17 +45,19 @@ public class Encarrec {
         StringBuilder sb = new StringBuilder();
         sb.append("Nom del client: " + nomClient + "\n");
         sb.append("Telefon del client: " + telefonClient + "\n");
-        sb.append("Data de l'encàrrec: " + data + "\n");
-        sb.append("Quantitat\tUnitats\tArticle\n");
-        sb.append("=========\t=======\t=========\n");
-        for(Article a : articles) {
-            sb.append(a.toString() + "\t\t"+ " " + "\n");
+        sb.append("Data de l'encàrrec: " + data.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + "\n");
+        sb.append(String.format("%-10s %-10s %s%n", "Quantitat", "Unitats", "Article"));
+        sb.append(String.format("%-10s %-10s %s%n", "=========", "=======", "======="));
+        for (Article a : articles) {
+            sb.append(String.format("%-10s %-10s %s%n", a.getQuantitat(), a.getUnitat(), a.getNom()));
         }
-        return sb.toString();
+            return sb.toString();
     }
     public String generarCSV() {
         StringBuilder sb = new StringBuilder();
-        sb.append(nomClient + ";" + telefonClient + ";" + data + ";");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String dataFormatejada = data.format(formatter);
+        sb.append(nomClient + ";" + telefonClient + ";" + dataFormatejada + ";");
         for (Article a : articles) {
             sb.append(a.toCSV());
         }
@@ -63,19 +68,28 @@ public class Encarrec {
         try {
             return LocalDate.parse(data, formatter);
         } catch (DateTimeParseException e) {
-            throw new IllegalArgumentException("Sisplau, indica una data correcta en format dd/mm/aaaa");
+            System.out.println("Sisplau, indica una data correcta en format dd/mm/aaaa");
+            return null;
         }
     }
     public void setNomClient(String nomClient) {
+        for(int i = 0; i < nomClient.length(); i++) {
+            char c = nomClient.charAt(i);
+            if(!Character.isLetter(c)) {
+                throw new IllegalArgumentException("El nom ha de contenir només lletres");
+            } 
+        }
         this.nomClient = UtilString.normalitzaString(nomClient);
     }
     public void setTelefonClient(String telefonClient) {
         if (telefonClient == null || telefonClient.length() != 9) {
-            throw new IllegalArgumentException("El telèfon ha de ser de nou dígits.");
+            System.out.println("El telèfon ha de ser de nou dígits");
+            return;
         }
         for(int i = 0; i < telefonClient.length(); i++) {
             if(!Character.isDigit(telefonClient.charAt(i))) {
-                throw new IllegalArgumentException("El telèfon només pot contenir números.");
+                System.out.println("El telèfon només pot contenir números");
+                return;
             }
         }
         this.telefonClient = telefonClient;

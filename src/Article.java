@@ -9,19 +9,11 @@ public class Article {
     public Article (String nom, Unitat unitat, double quantitat) {
         this.nom = UtilString.normalitzaString(nom);
         this.unitat = unitat;
-        setQuantitat(quantitat);
+        this.quantitat = quantitat;
     }
     public String getNom() {return nom;}
     public Unitat getUnitat() {return unitat;}
     public double getQuantitat() {return quantitat;}
-    public void setQuantitat(double quantitat) {
-        if (quantitat >= 0) {
-            this.quantitat = quantitat;
-        } else {
-            throw new IllegalArgumentException("Has d'indicar almenys una unitat.");
-        }
-    }
-    @Override
     public String toString() {
         return String.format("%.2f\t%s\t%s", quantitat, unitat, nom);
     }

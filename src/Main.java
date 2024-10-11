@@ -1,5 +1,6 @@
 package src;
 import java.io.*;
+import java.time.LocalDate;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -17,14 +18,14 @@ public class Main {
             switch(resposta) {
                 case "1" -> {
                     generaEncarrec();
-                    System.out.println("Encàrrec generat correctament.");
+                    System.out.println("Encàrrec generat correctament");
                 }
                 case "2" -> mostraEncarrec();
                 case "3" -> {
                     System.out.println("Adéu");
                     return;
                 }
-                default -> System.out.println("Opció no vàlida. Tria 1, 2 o 3.");
+                default -> System.out.println("Opció no vàlida. Tria 1, 2 o 3");
             }
         }
     }
@@ -32,17 +33,37 @@ public class Main {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         while(true) {
             try {
+            while(true) {
                 System.out.println("Introdueix el seu nom:");
-                String nom = reader.readLine();
-                encarrec.setNomClient(nom);
-                System.out.println("Introdueix el seu telèfon:");
-                String telefon = reader.readLine();
-                encarrec.setTelefonClient(telefon);
-                System.out.println("La data en la que vol l'encàrrec (dd/MM/yyyy):");
-                String dataStr = reader.readLine();
-                encarrec.setData(encarrec.formatejarData(dataStr));
+                try {
+                    String nom = reader.readLine();
+                    encarrec.setNomClient(nom);
+                    break;
+                } catch (IllegalArgumentException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+                String telefon;
+                while(true) {
+                    System.out.println("Introdueix el seu telèfon:");
+                    telefon = reader.readLine();
+                    encarrec.setTelefonClient(telefon);
+                    if(encarrec.getTelefonClient() != null) {
+                        break;
+                    }
+                }
+                LocalDate data = null;
+                while(data == null) {
+                    System.out.println("La data en la que vol l'encàrrec (dd/MM/yyyy):");
+                    String dataStr = reader.readLine();
+                    encarrec.setData(encarrec.formatejarData(dataStr));
+                    if(encarrec.getData() != null) {
+                        break;
+                    }
+                }
                 break;
             } catch (IOException e) {
+                System.out.println("Error al llegir les dades, torna-ho a provar");
                 e.printStackTrace();
             }
         }
@@ -50,17 +71,32 @@ public class Main {
     private static void demanaArticles(Encarrec encarrec) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in)); 
         while (true) {
-            System.out.println("Introdueix el nom de l'article:");
-            String nomArticle = reader.readLine();
+            String nomArticle = "";
+            while(true) {
+                System.out.println("Introdueix el nom de l'article:");
+                try {
+                    nomArticle = UtilString.normalitzaString(reader.readLine());
+                    break;
+                } catch (IllegalArgumentException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+    
             double quantitat = 0;
 
             while (true) {
+                System.out.println("Introdueix la quantitat que vulguis:");
                 try {
-                    System.out.println("Introdueix la quantitat que vulguis:");
                     quantitat = Double.parseDouble(reader.readLine());
-                    break; 
+                    if(quantitat <= 0) {
+                        throw new IllegalArgumentException("Has d'indicar almenys una unitat");
+                    } 
+                    break;
                 } catch (NumberFormatException e) {
-                    System.out.println("Quantitat no vàlida. Introdueix un número correcte.");
+                    System.out.println("Sisplau, indica un número vàlid");
+
+                } catch (IllegalArgumentException e) {
+                    System.out.println(e.getMessage());
                 }
             }
             Unitat unitat = null;
@@ -70,7 +106,7 @@ public class Main {
                     unitat = Unitat.fromString(reader.readLine()); 
                     break; 
                 } catch (IllegalArgumentException e) {
-                    System.out.println("Unitat no vàlida. Introdueix una unitat correcte.");
+                   System.out.println(e.getMessage());
                 }
             }
             Article article = new Article(nomArticle, unitat, quantitat);
@@ -132,7 +168,7 @@ public class Main {
                 System.out.println("Generant fitxer Binari...");
                 Gestor.EscriureBinari(encarrec);
             }
-            default -> System.out.println("Opció no vàlida. Tria 1, 2 o 3.");
+            default -> System.out.println("Opció no vàlida. Tria 1, 2 o 3");
         }
     }
     private static void generaEncarrec() throws IOException {
