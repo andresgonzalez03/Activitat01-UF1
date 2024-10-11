@@ -43,8 +43,8 @@ public class Encarrec {
         sb.append("Nom del client: " + nomClient + "\n");
         sb.append("Telefon del client: " + telefonClient + "\n");
         sb.append("Data de l'encàrrec: " + data + "\n");
-        sb.append("Quantitat\tUnitats\t" + " " + "Article\n");
-        sb.append("=========\t=======\t" + " " + "=========\n");
+        sb.append("Quantitat\tUnitats\tArticle\n");
+        sb.append("=========\t=======\t=========\n");
         for(Article a : articles) {
             sb.append(a.toString() + "\t\t"+ " " + "\n");
         }

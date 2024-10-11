@@ -3,30 +3,29 @@ import java.io.*;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        while(true) {
-            mostrarMenu();
-        }
+        mostrarMenu();
     }
     private static void mostrarMenu() throws IOException {
-        
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        System.out.println("Selecciona una opción:");
-        System.out.println("1. Generar un nou encàrrec");
-        System.out.println("2. Mostrar un encàrrec");
-        System.out.println("3. Sortir");
-        String resposta = reader.readLine();
-
-        switch(resposta) {
-            case "1" -> {
-                Encarrec encarrec = generaEncarrec();
-                System.out.println("Encàrrec generat correctament.");
+        while(true) {
+            System.out.println("Selecciona una opción:");
+            System.out.println("1. Generar un nou encàrrec");
+            System.out.println("2. Mostrar un encàrrec");
+            System.out.println("3. Sortir");
+            String resposta = reader.readLine();
+    
+            switch(resposta) {
+                case "1" -> {
+                    generaEncarrec();
+                    System.out.println("Encàrrec generat correctament.");
+                }
+                case "2" -> mostraEncarrec();
+                case "3" -> {
+                    System.out.println("Adéu");
+                    return;
+                }
+                default -> System.out.println("Opció no vàlida. Tria 1, 2 o 3.");
             }
-            case "2" -> mostraEncarrec();
-            case "3" ->  {
-                System.out.println("Adéu");
-                return;
-            }
-            default -> System.out.println("Opció no vàlida. Tria 1, 2 o 3.");
         }
     }
     private static void demanaDadesUsuari(Encarrec encarrec) throws IOException {
@@ -47,7 +46,6 @@ public class Main {
                 e.printStackTrace();
             }
         }
-        demanaArticles(encarrec);
     }
     private static void demanaArticles(Encarrec encarrec) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in)); 
@@ -55,6 +53,7 @@ public class Main {
             System.out.println("Introdueix el nom de l'article:");
             String nomArticle = reader.readLine();
             double quantitat = 0;
+
             while (true) {
                 try {
                     System.out.println("Introdueix la quantitat que vulguis:");
@@ -82,10 +81,10 @@ public class Main {
             System.out.println("Vols introduir un altre article? (sí o no)");
             String resposta = reader.readLine();
             if (resposta.equalsIgnoreCase("no")) {
-                break; 
+                System.out.println();
+                break;
             }
-        }
-        quinFitxer(encarrec);  
+        }  
     }
     private static void mostraEncarrec() throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -96,15 +95,15 @@ public class Main {
         String ruta = reader.readLine();
         switch (resposta) {
             case "1":
-                System.out.println("Llegint l'albarà...");
+                System.out.println("Llegint l'albarà...\n");
                 Gestor.llegirAlbara(ruta); 
                 break;
             case "2":
-                System.out.println("Llegint el fitxer CSV...");
+                System.out.println("Llegint el fitxer CSV...\n");
                 Gestor.llegirCSV(ruta);
                 break;
             case "3":
-                System.out.println("Llegint el fitxer binari...");
+                System.out.println("Llegint el fitxer binari...\n");
                 Gestor.llegirBinari(ruta); 
                 break;
             default:
@@ -114,7 +113,7 @@ public class Main {
     }
     private static void quinFitxer(Encarrec encarrec) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        System.out.println("Quin tipus de fitxer vols generar?");
+        System.out.println("Vale, quin tipus de fitxer vols generar?");
         System.out.println("1. Albarà (Text)");
         System.out.println("2. CSV");
         System.out.println("3. Binari");
@@ -136,10 +135,10 @@ public class Main {
             default -> System.out.println("Opció no vàlida. Tria 1, 2 o 3.");
         }
     }
-    private static Encarrec generaEncarrec() throws IOException {
+    private static void generaEncarrec() throws IOException {
         Encarrec encarrec = new Encarrec();
         demanaDadesUsuari(encarrec);
         demanaArticles(encarrec);
-        return encarrec;
+        quinFitxer(encarrec);
     }
 }

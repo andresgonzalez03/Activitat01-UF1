@@ -1,5 +1,6 @@
 package src;
 import java.io.*;
+import java.time.format.DateTimeFormatter;
 
 public class Gestor {
     public static void crearDirectorisFactures() throws IOException {
@@ -31,7 +32,7 @@ public class Gestor {
     }
     public static void EscriureCSV(Encarrec encarrec) throws IOException {
         crearDirectorisFactures();
-        String ruta = "/home/this_andres/Activitat01-UF1/fitxersCSV";
+        String ruta = "/home/this_andres/Activitat01-UF1/fitxersCSV/";
         String nomArxiu = ruta + "encarrecs_client_" + encarrec.getNomClient() + "_" + System.currentTimeMillis() + ".csv";
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(nomArxiu))) {
             writer.write(encarrec.generarCSV());
@@ -42,14 +43,15 @@ public class Gestor {
     }
     public static void EscriureBinari(Encarrec encarrec) throws IOException {
         crearDirectorisFactures();
-        String ruta = "/home/this_andres/Activitat01-UF1/fitxersBinaris";
+        String ruta = "/home/this_andres/Activitat01-UF1/fitxersBinaris/";
         String nomArxiu = ruta + "encarrecs_client_" + encarrec.getNomClient() + "_" + System.currentTimeMillis() + ".bin";
         try {
             FileOutputStream file1 = new FileOutputStream(nomArxiu);
             DataOutputStream str1 = new DataOutputStream(file1);
             str1.writeUTF(encarrec.getNomClient());
             str1.writeUTF(encarrec.getTelefonClient());
-            str1.writeUTF(encarrec.getData().toString());
+            String dataFormatejada = encarrec.getData().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            str1.writeUTF(dataFormatejada);
             for(Article a : encarrec.getArticles()) {
                 str1.writeUTF(a.getNom());
                 str1.writeDouble(a.getQuantitat());
@@ -73,7 +75,6 @@ public class Gestor {
             encarrec.setNomClient(nomClient);
             encarrec.setTelefonClient(telefonClient);
             encarrec.setData(encarrec.formatejarData(data));
-            System.out.println(encarrec.generarAlbara());
 
             while(str2.available() > 0) {
                 String nomArticle = str2.readUTF();
